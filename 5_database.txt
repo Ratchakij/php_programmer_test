@@ -1,0 +1,58 @@
+// ข้อมูลพนักงาน
+Table: employee
+Columns:
+    EMP_ID int AI PK 
+    FIRST_NAME varchar(20) 
+    LAST_NAME varchar(20) 
+    START_DATE date 
+    POSITION varchar(20) 
+    department_DEPT_ID int 
+    branches_BRANCH_ID int 
+
+// แผนก
+Table: department
+Columns:
+    DEPT_ID int AI PK 
+    NAME varchar(20)
+
+// สาขา
+Table: branches 
+Columns:
+    BRANCH_ID int AI PK 
+    NAME varchar(20) 
+    ADDRESS varchar(30) 
+    PROVINCE varchar(20) 
+    TYPE VARCHAR(10)
+
+//////////////////////////////////////////////
+5.2 (ทดสอบ sql) ต้องการเพิ่มสาขาที่จังหวัด เชียงใหม่ เชียงราย และภูเก็ต
+ตอบ 
+INSERT INTO `branches` (`NAME`, `ADDRESS`, `PROVINCE`, `TYPE`) 
+VALUES ('เชียงใหม่', 'เชียงใหม่', 'เชียงใหม่', 'DOMESTIC'),
+       ('เชียงราย', 'เชียงราย', 'เชียงราย', 'DOMESTIC'),
+       ('ภูเก็ต', 'ภูเก็ต', 'ภูเก็ต', 'DOMESTIC');
+
+5.2 (ทดสอบ sql) ต้องการลบตำแหน่ง sale
+ตอบ DELETE FROM `employee` WHERE `POSITION` = 'sale';
+
+5.1 (ทดสอบ sql) ต้องการแก้ไข สาขาญี่ปุ่น เป็น นาโกย่า
+ตอบ UPDATE `branches` SET `NAME` = 'นาโกย่า' WHERE `NAME` = 'ญี่ปุ่น';
+
+5.2 (ทดสอบ sql) ต้องการแสดงข้อมูลพนักงานบริษัท Bangkok Samurai ทั้งหมด 400 คน
+ตอบ SELECT * FROM `employee`;
+
+5.3 ( ทดสอบ sql) ต้องการแสดงข้อมูลพนักงานบริษัท Bangkok Samurai ที่อยู่ ในสาขา
+สนามบินสุวรรณภูมิ และกรุงเทพ
+ตอบ SELECT * FROM `employee` JOIN `branches` 
+    WHERE branches.NAME IN ('สนามบินสุวรรณภูมิ', 'กรุงเทพ');
+
+5.4 ( ทดสอบ sql) ต้องการแสดงข้อมูลพนักงานบริษัท Bangkok Samurai ที่อยู่
+ในสาขากรุงเทพ และมีตำแหน่งเป็น programmer
+ตอบ SELECT * FROM `employee` 
+    JOIN `branches`
+    LEFT JOIN `department` ON `department_DEPT_ID` = `DEPT_ID` 
+    WHERE department.NAME = 'programmer' AND branches.NAME = 'กรุงเทพ'
+
+5.5 ( ทดสอบ sql) ต้องการแสดงข้อมูลพนักงาน โดยมีข้อมูล สาขา
+และตำแหน่งของพนักงานแต่ละคน ในบริษัท Bangkok Samurai ทั้งหมด
+ตอบ SELECT b.NAME, e.POSITION FROM `employee` e JOIN `branches` b 
